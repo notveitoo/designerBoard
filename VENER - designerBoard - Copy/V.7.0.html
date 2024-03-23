@@ -671,10 +671,13 @@
             color: #f5f5f5;
             transform: scale(1.05);
         }
+
+
+    .note-cell-empty:empty:before {
+        content: attr(placeholder);
+        color: #a0a0a0;
+    }
         </style>
-
-
-
 
 
 
@@ -687,26 +690,24 @@
 
         <!-- Empty cells and buttons -->
         
-        <div class="note-cell-wrapper">
-	    <b>Name:</b>
-            <div class="note-cell-empty"  id="emptyNote1" onclick="handleNoteClick(this)"  contenteditable="true"></div>
-            <button class="copy-button"  onclick="copyToClipboard('emptyNote1')">Copy</button>
-            <button class="clear-button"  onclick="clearText('emptyNote1')">Clear</button>
-        </div>
+<div class="note-cell-wrapper">
+    <div class="note-cell-empty" id="emptyNote1" onclick="handleNoteClick(this)" placeholder="Enter name" contenteditable="true"></div>
+    <button class="copy-button" onclick="copyToClipboard('emptyNote1')">Copy</button>
+    <button class="clear-button" onclick="clearText('emptyNote1')">Clear</button>
+</div>
 
-        <div class="note-cell-wrapper">
-	    <b>Address:</b>
-            <div class="note-cell-empty" id="emptyNote2" onclick="handleNoteClick(this)" contenteditable="false"></div>
-            <button class="copy-button" onclick="copyToClipboard('emptyNote2')">Copy</button>
-            <button class="clear-button" onclick="clearText('emptyNote2')">Clear</button>
-        </div>
+<div class="note-cell-wrapper">
+    <div class="note-cell-empty" id="emptyNote2" onclick="handleNoteClick(this)" placeholder="Enter address" contenteditable="false"></div>
+    <button class="copy-button" onclick="copyToClipboard('emptyNote2')">Copy</button>
+    <button class="clear-button" onclick="clearText('emptyNote2')">Clear</button>
+</div>
 
-        <div class="note-cell-wrapper">
-	    <b>Sales Rep: </b>
-            <div class="note-cell-empty" id="emptyNote3" onclick="handleNoteClick(this)" contenteditable="false"></div>
-            <button class="copy-button" onclick="copyToClipboard('emptyNote3')">Copy</button>
-            <button class="clear-button" onclick="clearText('emptyNote3')">Clear</button>
-        </div>
+<div class="note-cell-wrapper">
+    <div class="note-cell-empty" id="emptyNote3" onclick="handleNoteClick(this)" placeholder="Enter sales representative" contenteditable="false"></div>
+    <button class="copy-button" onclick="copyToClipboard('emptyNote3')">Copy</button>
+    <button class="clear-button" onclick="clearText('emptyNote3')">Clear</button>
+</div>
+
 
         <!-- New buttons for automatic division -->
 
