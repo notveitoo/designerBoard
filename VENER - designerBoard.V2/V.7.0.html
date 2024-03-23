@@ -712,16 +712,15 @@
         <!-- New buttons for automatic division -->
 
         <div class="note-cell-wrapper" >
-<b>Production: </b>
-            <div class="note-cell-empty" id="divisionInput" contenteditable="true" onkeydown="handleDivisionInput(event)"></div>
+            <div class="note-cell-empty" id="divisionInput" onkeydown="handleDivisionInput(event)"placeholder="Enter Production" contenteditable="true"></div>
 
 		<i>/ 12 =</i>
             <div class="note-cell-empty" id="divisionResult" contenteditable="false"></div>
             <button class="copy-button" onclick="copyToClipboard('divisionResult')">Copy Result</button>
         </div>
-
+	 
         <div class="note-cell-wrapper" > 
-	    <b>Notes: </b>
+	   
             <div class="note-cell-empty-box" id="emptyNote4" onclick="handleNoteClick(this)" contenteditable="false" ></div>
         </div>
 
