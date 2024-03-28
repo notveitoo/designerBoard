@@ -324,9 +324,9 @@
 		
 		
 		
-		
 // Declare a global variable to store the calculated production
 var calculatedProduction = 0;
+var totalACOutput = 0; // New variable to store the total AC output
 
 function organizeLogs() {
     var logInputText = document.getElementById('logInput').value;
@@ -334,6 +334,7 @@ function organizeLogs() {
     var arrayLogs = logInputText.split('Array ');
     var organizedLogs = [];
     calculatedProduction = 0; // Reset calculated production for each call of the function
+    totalACOutput = 0; // Reset total AC output for each call of the function
     var arrayCount = 0;
     var adjustedACOutputs = {}; // Object to store adjusted AC outputs organized by array number
 
@@ -348,6 +349,9 @@ function organizeLogs() {
             var annualACOutputMatch = arrayInfo.find(line => line.includes("Annual AC output"));
             var annualACOutput = annualACOutputMatch ? parseFloat(annualACOutputMatch.trim().split(' ')[4]) : 'N/A';
 
+            // Add annual AC output to total AC output
+            totalACOutput += annualACOutput;
+
             // Multiply the annual AC output by 98% and add to calculated production
             var adjustedACOutput = annualACOutput * 0.98;
             calculatedProduction += adjustedACOutput;
@@ -360,49 +364,27 @@ function organizeLogs() {
                 noOfPanels: noOfPanels,
                 azimuth: azimuth,
                 tilt: tilt,
-                annualACOutput: annualACOutput
+                annualACOutput: annualACOutput,
+                adjustedACOutput: adjustedACOutput // Store adjusted AC output in organizedLogs
             });
         }
     }
 
-
-
-    // Log adjusted AC outputs organized by array number
-    console.log('AC Outputs - 2% :', adjustedACOutputs);
-	
-	// Display the total calculated production
-    console.log('Total Calculated Production of those subtract with 2%:', calculatedProduction);
-
     // Convert annualInputText to a float for arithmetic operation
     var annualInputValue = parseFloat(annualInputText.replace(/[^\d.]/g, ''));
+    var prodDiff = Math.abs(annualInputValue - totalACOutput);
+    console.log("Total AC Output:", totalACOutput);
+    console.log("Production Difference:", prodDiff);
+    var percentage = prodDiff / totalACOutput;
+    console.log("Percentage:", percentage);
 
-    // Calculate the difference
-    var calculatedProduction = parseFloat(calculatedProduction);
-    var difference = Math.abs(annualInputValue - calculatedProduction);
-    var Qoutient = difference / arrayCount;
-
-    console.log('Array count:', arrayCount);
-    // Display the difference
-    console.log('Difference of Annual Production and Calculated Production:', difference);
-    console.log('Qoutient:', Qoutient);
-
-    // Subtract the quotient from each adjusted AC output individually and assign them to corresponding entries in organizedLogs
-    var totalFinalCalculatedProduction = 0;
-    for (var j = 0; j < organizedLogs.length; j++) {
-        var arrayNumber = organizedLogs[j].arrayNumber;
-        var adjustedACOutput = adjustedACOutputs[arrayNumber];
-        var finalCalculatedProduction = adjustedACOutput - Qoutient;
-		
-		// Round to 4 decimal places
-        finalCalculatedProduction = Math.round(finalCalculatedProduction * 10000) / 10000;
-        totalFinalCalculatedProduction += finalCalculatedProduction;
-		
-        console.log('Final Calculated Production for Array ' + arrayNumber + ' subtract from Qoutient:', finalCalculatedProduction);
-        organizedLogs[j].finalCalculatedProduction = finalCalculatedProduction;
+    // Calculate and log the adjusted AC output for each array
+    for (var k = 0; k < organizedLogs.length; k++) {
+        var originalACOutput = organizedLogs[k].annualACOutput;
+        var adjustedACOutput = originalACOutput - (originalACOutput * percentage);
+        console.log(`Adjusted AC Output for Array ${organizedLogs[k].arrayNumber}:`, adjustedACOutput);
+        organizedLogs[k].adjustedACOutput = adjustedACOutput; // Update adjusted AC output in organizedLogs
     }
-
-    // Log the total final calculated production
-    console.log('Total Final Calculated Production:', totalFinalCalculatedProduction);
 
     organizedLogs.sort((a, b) => a.arrayNumber - b.arrayNumber);
 
@@ -418,8 +400,8 @@ function organizeLogs() {
                            <p>Azimuth: ${log.azimuth}</p>
                            <p>Tilt: ${log.tilt}</p>
                            <p>AC Output: ${log.annualACOutput}</p>
-                           <p>Production: </p>
-						   <p>${log.finalCalculatedProduction}</p>`;
+                           <p>Production:</p>
+						   <p>${log.adjustedACOutput}</p>`; // Include adjusted AC output
         logContainer.appendChild(logBox);
     }
 	
@@ -429,6 +411,7 @@ function organizeLogs() {
 
 // Call the organizeLogs function
 organizeLogs();
+
 
 
 
@@ -502,3 +485,49 @@ organizeLogs();
 
 
 
+
+
+
+
+ function processPastedText() {
+            var pastedText = document.getElementById('textArea').innerText;
+            var numbers = pastedText.match(/[\d,]+/g);
+
+            if (numbers && numbers.length > 12) {
+                var productionData = numbers.slice(-12).map(function(num) {
+                    return num.replace(/,/g, ''); // Remove commas
+                });
+
+                var consumptionBar = document.getElementById('textArea');
+                consumptionBar.innerHTML = '';
+
+                productionData.forEach(function(number) {
+                    var box = document.createElement('div');
+                    box.classList.add('box');
+                    box.textContent = number;
+                    consumptionBar.appendChild(box);
+                });
+            }
+        }
+
+        document.getElementById('textArea').addEventListener('input', function(e) {
+            setTimeout(processPastedText, 10);
+        });
+
+        function clearTextArea() {
+            var clearButton = document.querySelector('.clear-button');
+            clearButton.style.backgroundColor = '#6c757d'; 
+            setTimeout(() => {
+                clearButton.style.backgroundColor = '#55c360'; 
+            }, 200);
+            
+            try {
+                var textArea = document.getElementById('textArea');
+                textArea.innerHTML = ''; 
+                processPastedText(); 
+            } catch (error) {
+                console.error('Error clearing text area:', error);
+            }
+        }
+
+</script>

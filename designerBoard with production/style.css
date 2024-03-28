@@ -790,3 +790,52 @@
                 opacity: 1;
             }
         }
+		
+		        .consumption-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px;
+        }
+        .consumption-bar {
+            border: 2px solid #55c360;
+            border-radius: 12px;
+            height: 35px;
+            max-width: 415px;
+            margin: 5px;
+            padding: 0px;
+            font-weight: bold;
+            font-size: 11px;
+            color: #fff;
+            text-align: center;
+            align-content: center;
+            animation: fadeIn 0.5s ease;
+            cursor: text;
+            background-color: #1a202c;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            flex: 1;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .box {
+            display: inline-block;
+            width: 28px;
+            height: 25px;
+            border: 1px solid #55c360;
+            margin: 8px;
+            margin-top: 5px;
+            margin-left: 2px;
+            margin-right: 1px;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 25px;
+            background-color: #1a202c;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }

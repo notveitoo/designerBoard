@@ -70,10 +70,13 @@
 				<div class="note-cell-empty" id="divisionResult" contenteditable="false"></div>
 					<button class="copy-button" onclick="copyToClipboard('divisionResult')">Copy Result</button>
 				</div>
-	 
-				<div class="note-cell-wrapper" > 
-					<div class="note-cell-empty-box" id="emptyNote4" onclick="handleNoteClick(this)" contenteditable="false" ></div>
-				</div>
+				<div class="existing-content">   
+					</div>
+				<div class="consumption-bar-container">
+				<div class="consumption-bar" id="textArea" contenteditable="true" placeholder="Paste your data here..."></div>
+					<button class="clear-button" onclick="clearTextArea()" aria-label="Clear Text Area">Clear</button>
+			</div>
+				
 			
 			<h2><i>Mnthly. Solar Acs.</i></h2>
 				<div class="input-container">
@@ -508,7 +511,8 @@ function organizeLogs() {
         var originalACOutput = organizedLogs[k].annualACOutput;
         var adjustedACOutput = originalACOutput - (originalACOutput * percentage);
         console.log(`Adjusted AC Output for Array ${organizedLogs[k].arrayNumber}:`, adjustedACOutput);
-        organizedLogs[k].adjustedACOutput = adjustedACOutput; // Update adjusted AC output in organizedLogs
+        // Round off adjusted AC output to 2 decimal places
+        organizedLogs[k].adjustedACOutput = adjustedACOutput.toFixed(2); 
     }
 
     organizedLogs.sort((a, b) => a.arrayNumber - b.arrayNumber);
@@ -536,8 +540,6 @@ function organizeLogs() {
 
 // Call the organizeLogs function
 organizeLogs();
-
-
 
 
 
@@ -601,8 +603,6 @@ organizeLogs();
         // Copy text to clipboard (you can use your existing code for this)
         // For example, you can use the following code to copy text to clipboard:
         navigator.clipboard.writeText(message).then(function() {
-            alert('Text copied to clipboard: ' + message);
-            // You can add any other actions you want to perform after copying here
         }, function(err) {
             alert('Could not copy text: ', err);
         });
@@ -611,6 +611,49 @@ organizeLogs();
 
 
 
+
+
+
+ function processPastedText() {
+            var pastedText = document.getElementById('textArea').innerText;
+            var numbers = pastedText.match(/[\d,]+/g);
+
+            if (numbers && numbers.length > 12) {
+                var productionData = numbers.slice(-12).map(function(num) {
+                    return num.replace(/,/g, ''); // Remove commas
+                });
+
+                var consumptionBar = document.getElementById('textArea');
+                consumptionBar.innerHTML = '';
+
+                productionData.forEach(function(number) {
+                    var box = document.createElement('div');
+                    box.classList.add('box');
+                    box.textContent = number;
+                    consumptionBar.appendChild(box);
+                });
+            }
+        }
+
+        document.getElementById('textArea').addEventListener('input', function(e) {
+            setTimeout(processPastedText, 10);
+        });
+
+        function clearTextArea() {
+            var clearButton = document.querySelector('.clear-button');
+            clearButton.style.backgroundColor = '#6c757d'; 
+            setTimeout(() => {
+                clearButton.style.backgroundColor = '#55c360'; 
+            }, 200);
+            
+            try {
+                var textArea = document.getElementById('textArea');
+                textArea.innerHTML = ''; 
+                processPastedText(); 
+            } catch (error) {
+                console.error('Error clearing text area:', error);
+            }
+        }
 
 </script>
 
